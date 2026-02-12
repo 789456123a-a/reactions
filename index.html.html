@@ -1,0 +1,114 @@
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Плавающие реакции</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .reaction {
+            position: absolute;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
+            white-space: nowrap;
+            animation: float 6s linear forwards;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        @keyframes float {
+            0% {
+                bottom: -100px;
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: scale(1.5);
+            }
+        }
+        
+        .button {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff3366;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,51,102,0.5);
+            z-index: 9999;
+            transition: 0.3s;
+        }
+        
+        .button:hover {
+            transform: translateX(-50%) scale(1.1);
+            background: #ff1a4f;
+        }
+    </style>
+</head>
+<body>
+    <!-- Сюда будут добавляться реакции -->
+    <div id="reactions-container"></div>
+    
+    <!-- Кнопка отправки -->
+    <button class="button" onclick="sendReaction()">
+        Нажми и напиши!
+    </button>
+
+    <script>
+        function addReaction(text) {
+            const container = document.getElementById('reactions-container');
+            const reaction = document.createElement('div');
+            reaction.className = 'reaction';
+            reaction.textContent = text;
+            
+            // Случайное положение
+            reaction.style.left = Math.random() * 80 + '%';
+            
+            // Случайный размер
+            const size = Math.floor(Math.random() * 30) + 30;
+            reaction.style.fontSize = size + 'px';
+            
+            // Случайный цвет
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff9f1c', '#b980f0'];
+            reaction.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            container.appendChild(reaction);
+            
+            // Удалить после анимации
+            setTimeout(() => {
+                reaction.remove();
+            }, 6000);
+        }
+
+        function sendReaction() {
+            const text = prompt('Что написать на экране?', 'Привет!');
+            if (text && text.trim()) {
+                addReaction(text.trim());
+            }
+        }
+
+        // Добавим демо-сообщение при загрузке
+        window.onload = function() {
+            addReaction('Напиши нам');
+        }
+    </script>
+</body>
+</html>
